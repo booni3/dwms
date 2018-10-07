@@ -7,17 +7,20 @@ class Dwms
     private $username;
     private $password;
     private $secret;
+    private $simpleCache;
 
     /**
      * @param $username
      * @param $password
      * @param $secret
+     * @param null $simpleCache
      */
-    public function __construct($username, $password, $secret)
+    public function __construct($username, $password, $secret, $simpleCache = null)
     {
         $this->username = $username;
         $this->password = $password;
         $this->secret = $secret;
+        $this->simpleCache = $simpleCache;
     }
 
     /**
@@ -26,11 +29,12 @@ class Dwms
      * @param $username
      * @param $password
      * @param $secret
+     * @param null $simpleCache
      * @return Dwms;
      */
-    public static function make($username, $password, $secret)
+    public static function make($username, $password, $secret, $simpleCache = null)
     {
-        return new static ($username, $password, $secret);
+        return new static ($username, $password, $secret, $simpleCache);
     }
 
 
@@ -45,19 +49,9 @@ class Dwms
     {
         $class = "\\Booni3\\Dwms\\Api\\".ucwords($method);
         if (class_exists($class) && ! (new \ReflectionClass($class))->isAbstract()) {
-            return new $class($this->username, $this->password, $this->secret);
+            return new $class($this->username, $this->password, $this->secret, $this->simpleCache);
         }
         throw new \BadMethodCallException("Undefined method [{$method}] called.");
-    }
-
-
-    /**
-     * @return \Booni3\Dwms\Api\Auth
-     * @throws \ReflectionException
-     */
-    public function Auth()
-    {
-        return $this->getApiInstance('auth');
     }
 
     /**
@@ -76,6 +70,24 @@ class Dwms
     public function Orders()
     {
         return $this->getApiInstance('orders');
+    }
+
+    /**
+     * @return \Booni3\Dwms\Api\Products
+     * @throws \ReflectionException
+     */
+    public function Products()
+    {
+        return $this->getApiInstance('products');
+    }
+
+    /**
+     * @return \Booni3\Dwms\Api\Deliveries
+     * @throws \ReflectionException
+     */
+    public function Deliveries()
+    {
+        return $this->getApiInstance('deliveries');
     }
 
     /**

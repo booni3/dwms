@@ -8,10 +8,13 @@
             "email": "adam@profilestudio.com"
         }
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "require": {
         "guzzlehttp/guzzle": "^6.3",
-        "kamermans/guzzle-oauth2-subscriber": "~1.0"
+        "kamermans/guzzle-oauth2-subscriber": "~1.0",
+        "cache/redis-adapter": "^1.0",
+        "cache/simple-cache-bridge": "^1.0",
+        "predis/predis": "^1.1"
     },
     "autoload": {
         "psr-4": {
