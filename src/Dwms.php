@@ -11,6 +11,7 @@ class Dwms
     /**
      * @param $username
      * @param $password
+     * @param $secret
      */
     public function __construct($username, $password, $secret)
     {
