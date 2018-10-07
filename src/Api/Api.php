@@ -7,8 +7,10 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
+use Illuminate\Support\Facades\Redis;
 use kamermans\OAuth2\GrantType\PasswordCredentials;
 use kamermans\OAuth2\OAuth2Middleware;
+use kamermans\OAuth2\Persistence\SimpleCacheTokenPersistence;
 
 class Api
 {
@@ -16,11 +18,12 @@ class Api
     protected $password;
     protected $secret;
 
-    public function __construct($username, $password, $secret)
+    public function __construct($username, $password, $secret, $simpleCache = null)
     {
         $this->username = $username;
         $this->password = $password;
         $this->secret = $secret;
+        $this->simpleCache = $simpleCache;
     }
 
     /**
@@ -118,8 +121,16 @@ class Api
 //            "scope" => "your scope(s)", // optional
 //            "state" => time(), // optional
         ];
+
         $grant_type = new PasswordCredentials($auth_client, $auth_config);
         $oauth = new OAuth2Middleware($grant_type);
+
+        // Set cache client
+        if(isset($this->simpleCache)){
+            $cache_persistance = new SimpleCacheTokenPersistence($this->simpleCache, 'dwms-oauth2-token');
+            $oauth->setTokenPersistence($cache_persistance);
+        }
+
         return $oauth;
     }
 
