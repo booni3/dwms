@@ -26,6 +26,12 @@ class Api
         $this->simpleCache = $simpleCache;
     }
 
+    protected function baseUri()
+    {
+        return 'http://diamond.test';
+    }
+
+
     /**
      * {@inheritdoc}
      */
@@ -55,9 +61,15 @@ class Api
                     'Accept' => 'application/json'
                 ]
             ]);
+
+//            foreach ($this->container as $transaction) {
+//                echo (string) $transaction['request']->getBody(); // Hello World
+//            }
+
             return json_decode((string)$response->getBody(), true);
         } catch (ClientException $e) {
-            throw $e;
+            $responseBodyAsString = $e->getResponse()->getBody()->getContents();
+            return json_decode((string)$responseBodyAsString, true);
         }
     }
 
@@ -69,10 +81,10 @@ class Api
     protected function getClient()
     {
         return new Client([
-            'base_uri' => 'http://diamond.test',
+            'base_uri' => $this->baseUri() . '/api/v1/',
             'handler' => $this->createHandler(),
-            'auth'    => 'oauth',
-            'debug' => false
+            'Accept' => 'application/json',
+            'auth'    => 'oauth'
         ]);
     }
 
@@ -99,6 +111,11 @@ class Api
         // oAuth middleware
         $handler_stack->push($this->oAuthMiddleware());
 
+        // store request history middleware
+        $this->container = [];
+        $history = Middleware::history($this->container);
+        $handler_stack->push($history);
+
         return $handler_stack;
     }
 
@@ -110,8 +127,7 @@ class Api
         // Authorization client - this is used to request OAuth access tokens
         $auth_client = new Client([
             // URL for access_token request
-            'base_uri' => 'http://diamond.test/api/login',
-            'debug' => true
+            'base_uri' => $this->baseUri() . '/api/login/'
         ]);
         $auth_config = [
             "client_id" => "2",
