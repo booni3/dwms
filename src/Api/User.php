@@ -8,6 +8,6 @@ class User extends Api
 {
     public function getUser()
     {
-        return $this->_get('api/v1/get-user');
+        return $this->_get('get-user');
     }
 }
