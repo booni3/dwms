@@ -28,7 +28,7 @@ class Api
 
     protected function baseUri()
     {
-        return 'http://diamond.test';
+        return 'https://dynamicwms.app';
     }
 
 
