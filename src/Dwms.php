@@ -82,6 +82,15 @@ class Dwms
     }
 
     /**
+     * @return \Booni3\Dwms\Api\Products
+     * @throws \ReflectionException
+     */
+    public function Shipments()
+    {
+        return $this->getApiInstance('shipments');
+    }
+
+    /**
      * @return \Booni3\Dwms\Api\Deliveries
      * @throws \ReflectionException
      */
