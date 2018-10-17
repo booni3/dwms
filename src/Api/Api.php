@@ -28,48 +28,50 @@ class Api
 
     protected function baseUri()
     {
-        return 'https://dynamicwms.app';
+        return 'http://diamond.test';
+//        return 'https://dynamicwms.app';
     }
 
 
     /**
      * {@inheritdoc}
+     * @throws \Exception
      */
     public function _get($url = null, array $parameters = [])
     {
-        return $this->execute('get', $url, $parameters);
+        try {
+            $response = $this->getClient()->get($url, [
+                'query' => $parameters,
+                'headers' => [
+                    'Content-Type' => 'application/x-www-form-urlencoded',
+                    'Accept' => 'application/json'
+                ]
+            ]);
+            return json_decode((string)$response->getBody(), true);
+        } catch (ClientException $e) {
+            $responseBodyAsString = $e->getResponse()->getBody()->getContents();
+            throw new \Exception($responseBodyAsString, $response->getStatusCode());
+        }
     }
 
     /**
      * {@inheritdoc}
+     * @throws \Exception
      */
     public function _post($url = null, array $parameters = [])
     {
-        return $this->execute('post', $url, $parameters);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function execute($httpMethod, $url, array $parameters = [])
-    {
         try {
-            $response = $this->getClient()->{$httpMethod}($url, [
+            $response = $this->getClient()->post($url, [
                 'form_params' => $parameters,
                 'headers' => [
                     'Content-Type' => 'application/x-www-form-urlencoded',
                     'Accept' => 'application/json'
                 ]
             ]);
-
-//            foreach ($this->container as $transaction) {
-//                echo (string) $transaction['request']->getBody(); // Hello World
-//            }
-
             return json_decode((string)$response->getBody(), true);
         } catch (ClientException $e) {
             $responseBodyAsString = $e->getResponse()->getBody()->getContents();
-            return json_decode((string)$responseBodyAsString, true);
+            throw new \Exception($responseBodyAsString, $response->getStatusCode());
         }
     }
 
