@@ -4,20 +4,23 @@ namespace Booni3\Dwms;
 
 class Dwms
 {
-    private $username;
+    private $baseUri;
+    private $userName;
     private $password;
     private $secret;
     private $simpleCache;
 
     /**
-     * @param $username
+     * @param $baseUri
+     * @param $userName
      * @param $password
      * @param $secret
      * @param null $simpleCache
      */
-    public function __construct($username, $password, $secret, $simpleCache = null)
+    public function __construct($baseUri, $userName, $password, $secret, $simpleCache = null)
     {
-        $this->username = $username;
+        $this->baseUri = $baseUri;
+        $this->userName = $userName;
         $this->password = $password;
         $this->secret = $secret;
         $this->simpleCache = $simpleCache;
@@ -32,9 +35,9 @@ class Dwms
      * @param null $simpleCache
      * @return Dwms;
      */
-    public static function make($username, $password, $secret, $simpleCache = null)
+    public static function make($baseUri, $userName, $password, $secret, $simpleCache = null)
     {
-        return new static ($username, $password, $secret, $simpleCache);
+        return new static ($baseUri, $userName, $password, $secret, $simpleCache);
     }
 
 
@@ -49,7 +52,7 @@ class Dwms
     {
         $class = "\\Booni3\\Dwms\\Api\\".ucwords($method);
         if (class_exists($class) && ! (new \ReflectionClass($class))->isAbstract()) {
-            return new $class($this->username, $this->password, $this->secret, $this->simpleCache);
+            return new $class($this->baseUri, $this->userName, $this->password, $this->secret, $this->simpleCache);
         }
         throw new \BadMethodCallException("Undefined method [{$method}] called.");
     }
@@ -97,17 +100,6 @@ class Dwms
     public function Deliveries()
     {
         return $this->getApiInstance('deliveries');
-    }
-
-    /**
-     * @param $method
-     * @param array $parameters
-     * @throws \Exception
-     * @return mixed
-     */
-    public function __call($method, array $parameters)
-    {
-        return $this->getApiInstance($method);
     }
 
 }

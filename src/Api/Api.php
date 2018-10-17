@@ -14,13 +14,15 @@ use kamermans\OAuth2\Persistence\SimpleCacheTokenPersistence;
 
 class Api
 {
+    protected $baseUri;
     protected $username;
     protected $password;
     protected $secret;
 
-    public function __construct($username, $password, $secret, $simpleCache = null)
+    public function __construct($baseUri, $userName, $password, $secret, $simpleCache = null)
     {
-        $this->username = $username;
+        $this->baseUri = $baseUri;
+        $this->username = $userName;
         $this->password = $password;
         $this->secret = $secret;
         $this->simpleCache = $simpleCache;
@@ -28,8 +30,7 @@ class Api
 
     protected function baseUri()
     {
-        return 'http://diamond.test';
-//        return 'https://dynamicwms.app';
+        return $this->baseUri;
     }
 
 
