@@ -29,7 +29,8 @@ class Dwms
     /**
      * Create instance of Client
      *
-     * @param $username
+     * @param $baseUri
+     * @param $userName
      * @param $password
      * @param $secret
      * @param null $simpleCache

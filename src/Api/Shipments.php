@@ -4,7 +4,6 @@ namespace Booni3\Dwms\Api;
 
 class Shipments extends Api
 {
-
     public function getOrder($orderId)
     {
 
