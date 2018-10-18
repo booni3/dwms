@@ -72,6 +72,8 @@ class Api
             return json_decode((string)$response->getBody(), true);
         } catch (ClientException $e) {
             $responseBodyAsString = $e->getResponse()->getBody()->getContents();
+
+
             throw new \Exception($responseBodyAsString, $e->getResponse()->getStatusCode());
         }
     }
