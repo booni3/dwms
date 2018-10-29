@@ -86,7 +86,7 @@ class Dwms
     }
 
     /**
-     * @return \Booni3\Dwms\Api\Products
+     * @return \Booni3\Dwms\Api\Shipments
      * @throws \ReflectionException
      */
     public function Shipments()
@@ -101,6 +101,15 @@ class Dwms
     public function Deliveries()
     {
         return $this->getApiInstance('deliveries');
+    }
+
+    /**
+     * @return \Booni3\Dwms\Api\Stock
+     * @throws \ReflectionException
+     */
+    public function Stock()
+    {
+        return $this->getApiInstance('stock');
     }
 
 }
