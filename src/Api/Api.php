@@ -51,7 +51,7 @@ class Api
             return json_decode((string)$response->getBody(), true);
         } catch (ClientException $e) {
             $responseBodyAsString = $e->getResponse()->getBody()->getContents();
-            throw new \Exception($responseBodyAsString, $response->getStatusCode());
+            throw new \Exception($responseBodyAsString, $e->getResponse()->getStatusCode());
         }
     }
 
@@ -72,8 +72,8 @@ class Api
             return json_decode((string)$response->getBody(), true);
         } catch (ClientException $e) {
             $responseBodyAsString = $e->getResponse()->getBody()->getContents();
-            return json_decode((string)$responseBodyAsString, true);
-//            throw new \Exception($responseBodyAsString, $e->getResponse()->getStatusCode());
+//            return json_decode((string)$responseBodyAsString, true);
+            throw new \Exception($responseBodyAsString, $e->getResponse()->getStatusCode());
         }
     }
 
