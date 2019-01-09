@@ -14,6 +14,13 @@ class Orders extends Api
 
     }
 
+    public function getOrderByReference(string $orderRef)
+    {
+        return $this->_get('get-order-by-ref',[
+            'order_ref' => $orderRef
+        ]);
+    }
+
     public function createOrder(
         $unique_id,
         $store_code,
