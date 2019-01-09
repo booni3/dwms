@@ -6,7 +6,7 @@ class Orders extends Api
 {
     public function getOrder($orderId)
     {
-
+        return $this->_get('get-order/' . $orderId);
     }
 
     public function getOpenOrders()
