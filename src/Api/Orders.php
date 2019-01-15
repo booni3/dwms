@@ -65,4 +65,19 @@ class Orders extends Api
         ]);
     }
 
+    public function cancel(int $orderId)
+    {
+        return $this->_post('cancel-order', ['id' => $orderId]);
+    }
+
+    public function hold(int $orderId)
+    {
+        return $this->_post('hold-order', ['id' => $orderId]);
+    }
+
+    public function unHold(int $orderId)
+    {
+        return $this->_post('hold-order', ['id' => $orderId]);
+    }
+
 }
