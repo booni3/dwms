@@ -70,6 +70,11 @@ class Orders extends Api
         return $this->_post('cancel-order', ['id' => $orderId]);
     }
 
+    public function cancelBackOrders(int $orderId)
+    {
+        return $this->_post('cancel-open-backorders', ['id' => $orderId]);
+    }
+
     public function hold(int $orderId)
     {
         return $this->_post('hold-order', ['id' => $orderId]);
