@@ -40,18 +40,26 @@ class Api
      */
     public function _get($url = null, array $parameters = [])
     {
-        try {
-            $response = $this->getClient()->get($url, [
-                'query' => $parameters,
-                'headers' => [
-                    'Content-Type' => 'application/x-www-form-urlencoded',
-                    'Accept' => 'application/json'
-                ]
-            ]);
-            return json_decode((string)$response->getBody(), true);
-        } catch (ClientException $e) {
-            return json_decode((string)$e->getResponse()->getBody(), true);
-        }
+        $throttle = false;
+        do{
+            try {
+                $response = $this->getClient()->get($url, [
+                    'query' => $parameters,
+                    'headers' => [
+                        'Content-Type' => 'application/x-www-form-urlencoded',
+                        'Accept' => 'application/json'
+                    ]
+                ]);
+                return json_decode((string)$response->getBody(), true);
+            } catch (ClientException $e) {
+                if($e->getResponse()->getStatusCode() == 429){
+                    sleep(2);
+                    $throttle = true;
+                } else {
+                    return json_decode((string)$e->getResponse()->getBody(), true);
+                }
+            }
+        } while($throttle);
     }
 
     /**
@@ -60,18 +68,26 @@ class Api
      */
     public function _post($url = null, array $parameters = [])
     {
-        try {
-            $response = $this->getClient()->post($url, [
-                'form_params' => $parameters,
-                'headers' => [
-                    'Content-Type' => 'application/x-www-form-urlencoded',
-                    'Accept' => 'application/json'
-                ]
-            ]);
-            return json_decode((string)$response->getBody(), true);
-        } catch (ClientException $e) {
-            return json_decode((string)$e->getResponse()->getBody(), true);
-        }
+        $throttle = false;
+        do{
+            try {
+                $response = $this->getClient()->post($url, [
+                    'form_params' => $parameters,
+                    'headers' => [
+                        'Content-Type' => 'application/x-www-form-urlencoded',
+                        'Accept' => 'application/json'
+                    ]
+                ]);
+                return json_decode((string)$response->getBody(), true);
+            } catch (ClientException $e) {
+                if($e->getResponse()->getStatusCode() == 429){
+                    sleep(2);
+                    $throttle = true;
+                } else {
+                    return json_decode((string)$e->getResponse()->getBody(), true);
+                }
+            }
+        } while($throttle);
     }
 
     /**
