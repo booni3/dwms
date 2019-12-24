@@ -54,7 +54,7 @@ class Orders extends Api
             'full_name' => $full_name,
             'email' => $email,
             'telephone' => $telephone,
-            'company' => $company,
+            'company_name' => $company,
             'address1' => $address1,
             'address2' => $address2,
             'city' => $city,
